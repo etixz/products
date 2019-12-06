@@ -6,24 +6,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
 import javax.xml.ws.Response;
 import java.math.BigDecimal;
 
 @Controller
 @RequestMapping(value = "/products")
-public class ProductController {
+public class IndexController {
 
     @Autowired
     ProductDAO dao;
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity voegProductToe(@RequestParam(value = "name") String name,
+    @ModelAttribute(value = "all")
+    public Iterable<Product> findAll(){
+        return dao.findAll();
+    }
+
+    @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
+    public String showIndex(ModelMap map) {
+    return "index";
+    }
+    /*public Iterable<Product> voegProductToe(@RequestParam(value = "name") String name,
                                          @RequestParam(value = "price")BigDecimal price){
         Product nProd = new Product();
         nProd.setName(name);
@@ -31,5 +36,6 @@ public class ProductController {
         dao.save(nProd);
 
         return new ResponseEntity(HttpStatus.OK);
-    }
+        }*/
+
 }
